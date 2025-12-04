@@ -1,0 +1,29 @@
+<div class="toolbar">
+    <!-- barre de recherche -->
+    <mat-form-field appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput [(ngModel)]="searchName" placeholder="ex: pika..." />
+    </mat-form-field>
+
+    <!-- select Material -->
+    <mat-form-field appearance="outline">
+        <mat-label>Pokémon</mat-label>
+        <mat-select [(ngModel)]="selectedId">
+            <mat-option *ngFor="let p of pokemons | filterPokemonPipe:'name':searchName; trackBy: trackById"
+                [value]="p.id">
+                {{ p.name | titlecase }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+
+    <button mat-raised-button color="primary" [disabled]="!selectedId" (click)="go()">
+        <mat-icon>search</mat-icon>
+    </button>
+
+</div>
+
+<div class="content" *ngIf="pokeInformations as info">
+    <app-pokeinformations [informations]="info"></app-pokeinformations>
+</div>

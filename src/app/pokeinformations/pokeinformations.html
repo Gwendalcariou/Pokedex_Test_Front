@@ -1,0 +1,77 @@
+<div class="poke-card" *ngIf="informations as info">
+    <header class="poke-header">
+        <img class="artwork"
+            [src]="info.sprites.other?.['official-artwork']?.front_default || info.sprites.front_default"
+            [alt]="info.name" />
+        <div class="title">
+            <h2>#{{ info.id }} · {{ info.name | titlecase }}</h2>
+            <div class="types">
+                <span class="type-badge" *ngFor="let t of info.types" [ngClass]="'type-' + (t.type.name || 'unknown')">
+                    {{ t.type.name | titlecase }}
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <section class="meta">
+        <div><strong>Height :</strong> {{ info.height / 10 }} m</div>
+        <div><strong>Weight :</strong> {{ info.weight / 10 }} kg</div>
+    </section>
+
+    <section class="abilities">
+        <h3>Abilities</h3>
+        <ul>
+            <li *ngFor="let a of info.abilities">
+                {{ a.ability?.name | titlecase }}
+                <small *ngIf="a.is_hidden"> (Hidden)</small>
+            </li>
+        </ul>
+    </section>
+
+    <section class="stats" *ngIf="info.stats?.length">
+        <h3>Base stats</h3>
+        <ul class="stats-list">
+            <li *ngFor="let s of info.stats">
+                <span class="stat-name">{{ s.stat.name | titlecase }}</span>
+                <span class="bar">
+                    <span class="fill" [style.width.%]="(s.base_stat / 255) * 100"></span>
+                </span>
+                <span class="stat-val">{{ s.base_stat }}</span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="sprites" style="flex-direction: column;">
+        <h3>Artwork in game & Shiny artwork</h3>
+        <div style="display:flex; flex-direction:row">
+            <img *ngIf="info.sprites.front_default" [src]="info.sprites.front_default" alt="Front" />
+            <img *ngIf="info.sprites.back_default" [src]="info.sprites.back_default" alt="Back" />
+            <img *ngIf="info.sprites.front_shiny" [src]="info.sprites.front_shiny" alt="Shiny" />
+        </div>
+
+    </section>
+
+    <section class="evolutions">
+        <h3>Evolutions</h3>
+
+        <ng-container *ngIf="evolutionStages && evolutionStages.length; else noData">
+            <div class="evo-line">
+                <ng-container *ngFor="let stage of evolutionStages; let i = index">
+                    <ul class="evo-stage">
+                        <li class="evo-card" *ngFor="let sp of stage">
+                            <img [src]="sp.sprite" [alt]="sp.name" />
+                            <div class="evo-name">#{{ sp.id }} · {{ sp.name | titlecase }}</div>
+                        </li>
+                    </ul>
+                    <div class="evo-arrow" *ngIf="i < evolutionStages.length - 1">→</div>
+                </ng-container>
+            </div>
+            <!-- Affiche “Aucune évolution” si la chaîne n’a qu’un seul niveau -->
+            <div *ngIf="evolutionStages.length === 1" class="no-evo">— Aucune évolution —</div>
+        </ng-container>
+
+        <ng-template #noData>
+            <div class="no-evo">— (Chargement ou aucune donnée) —</div>
+        </ng-template>
+    </section>
+</div>

@@ -1,0 +1,19 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jest" // 1 : Enregistre les fichiers de définitions de types de Jest avec le compilateur TypeScript.
+    ],
+    "esModuleInterop": true, // 2 : Active l’option esModuleInterop du compilateur TypeScript sinon Jest affichera 
+                             //     beaucoup d’avertissements dans la console.
+    "emitDecoratorMetadata": true // 3 : Active l’option emitDecoratorMetadata du compilateur TypeScript sinon l’injection 
+                                  //     de dépendance d’Angular ne fonctionnera pas avec Jest.
+  },
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
+}

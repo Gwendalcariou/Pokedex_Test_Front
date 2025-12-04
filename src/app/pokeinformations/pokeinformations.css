@@ -1,0 +1,237 @@
+.poke-card {
+    max-width: 640px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.poke-header {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.artwork {
+    width: 128px;
+    height: 128px;
+    object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.title h2 {
+    margin: 0 0 6px 0;
+    font-size: 22px;
+}
+
+.types {
+    display: flex;
+    gap: 8px;
+}
+
+.type-badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+/* Couleurs de types (les plus courants) */
+.type-grass {
+    background: #63bc5a;
+}
+
+.type-fire {
+    background: #ff9d55;
+}
+
+.type-water {
+    background: #5090d6;
+}
+
+.type-poison {
+    background: #b567ce;
+}
+
+.type-bug {
+    background: #91c12f;
+}
+
+.type-normal {
+    background: #919aa2;
+}
+
+.type-flying {
+    background: #8fa9de;
+}
+
+.type-ground {
+    background: #d97845;
+}
+
+.type-rock {
+    background: #c5b78c;
+}
+
+.type-electric {
+    background: #f4d23c;
+    color: #222;
+}
+
+.type-psychic {
+    background: #fa7179;
+}
+
+.type-ice {
+    background: #73cec0;
+}
+
+.type-dragon {
+    background: #0b6dc3;
+}
+
+.type-dark {
+    background: #5a5465;
+}
+
+.type-steel {
+    background: #5a8ea1;
+}
+
+.type-fairy {
+    background: #ec8fe6;
+}
+
+.type-fighting {
+    background: #ce416b;
+}
+
+.type-ghost {
+    background: #5269ac;
+}
+
+.type-unknown {
+    background: #9aa0a6;
+}
+
+.meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+    margin: 10px 0 6px;
+    font-size: 14px;
+}
+
+.abilities h3,
+.stats h3 {
+    margin: 12px 0 8px;
+    font-size: 16px;
+}
+
+.stats-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stats-list li {
+    display: grid;
+    grid-template-columns: 120px 1fr 40px;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.stat-name {
+    font-size: 14px;
+    color: #374151;
+}
+
+.stat-val {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.bar {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #60a5fa, #34d399);
+}
+
+.sprites {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    flex-direction: column;
+}
+
+.sprites h3 {
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.sprites img {
+    width: 72px;
+    height: 72px;
+    image-rendering: pixelated;
+}
+
+.evolutions h3 {
+    margin: 12px 0 8px;
+    font-size: 16px;
+}
+
+.evo-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.evo-stage {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 12px;
+}
+
+.evo-card {
+    width: 140px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    padding: 8px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+}
+
+.evo-card img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+}
+
+.evo-name {
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+.evo-arrow {
+    font-size: 22px;
+    font-weight: 700;
+    color: #6b7280;
+}
