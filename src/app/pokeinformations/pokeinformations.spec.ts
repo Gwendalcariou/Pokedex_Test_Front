@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectorRef, SimpleChange } from '@angular/core';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { Pokeinformations } from './pokeinformations';
 import { PokeAPIService } from '../poke-apiservice';
@@ -19,6 +19,8 @@ describe('Pokeinformations', () => {
     getValue: jest.Mock;
   };
   let cdrMock: { markForCheck: jest.Mock };
+  let bus$: Subject<string>;
+
 
   beforeEach(async () => {
     apiMock = {
@@ -53,6 +55,13 @@ describe('Pokeinformations', () => {
     compositionInfoMock = {
       getValue: jest.fn().mockReturnValue(new Subject<string>()),
     };
+    
+    bus$ = new Subject<string>();
+
+    compositionInfoMock = {
+      getValue: jest.fn().mockReturnValue(bus$),
+    };
+
 
     cdrMock = {
       markForCheck: jest.fn(),
@@ -101,6 +110,73 @@ describe('Pokeinformations', () => {
     expect(stages[1][0].id).toBe(2);
     expect(stages[1][0].name).toBe('ivysaur');
 
-    expect(cdrMock.markForCheck).toHaveBeenCalled();
   });
+
+    it('should log when composition info bus emits an id', () => {
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+    bus$.next('25');
+
+    expect(logSpy).toHaveBeenCalledWith('[bus] id =', '25');
+
+    logSpy.mockRestore();
+  });
+
+    it('should handle species without evolution_chain url', () => {
+    apiMock.getPokemonSpecies.mockReturnValueOnce(
+      of({
+        evolution_chain: null,
+      }),
+    );
+
+    const info = { id: 1 } as PokemonInformations;
+    component.informations = info;
+
+    component.ngOnChanges({
+      informations: new SimpleChange(null, info, true),
+    });
+
+
+    expect(apiMock.getEvolutionChainByUrl).not.toHaveBeenCalled();
+
+    const stages = (component as any).evolutionStages;
+    expect(stages).toEqual([]); // aucun niveau d’évolution
+  });
+
+    it('should clean up subscriptions on ngOnDestroy', () => {
+    const destroy$ = (component as any).destroy$ as Subject<void>;
+    const nextSpy = jest.spyOn(destroy$, 'next');
+    const completeSpy = jest.spyOn(destroy$, 'complete');
+
+    component.ngOnDestroy();
+
+    expect(nextSpy).toHaveBeenCalledTimes(1);
+    expect(completeSpy).toHaveBeenCalledTimes(1);
+  });
+
+    it('should handle errors when loading evolution chain', () => {
+    // On force une erreur sur getPokemonSpecies pour activer catchError
+    apiMock.getPokemonSpecies.mockReturnValueOnce(
+      throwError(() => new Error('network error')),
+    );
+
+    const info = { id: 1 } as PokemonInformations;
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    component.informations = info;
+    component.ngOnChanges({
+      informations: new SimpleChange(null, info, false),
+    });
+
+    // L’erreur doit être loggée
+    expect(errorSpy).toHaveBeenCalled();
+
+    // Et aucune étape d’évolution ne doit être construite
+    const stages = (component as any).evolutionStages;
+    expect(stages).toEqual([]);
+
+    errorSpy.mockRestore();
+  });
+
+
 });

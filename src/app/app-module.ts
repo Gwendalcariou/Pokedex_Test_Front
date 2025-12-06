@@ -1,7 +1,7 @@
 import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
+import { CommonModule, NgClass, NgIf, NgForOf, TitleCasePipe } from '@angular/common';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { MyComponent } from './my-component/my-component';
@@ -25,13 +25,18 @@ import { MatInputModule } from '@angular/material/input';
   imports: [
     BrowserModule,
     FormsModule,
+    CommonModule,
     HttpClientModule,
     AppRoutingModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    NgIf,
+    NgForOf,
+    NgClass,
+    TitleCasePipe
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

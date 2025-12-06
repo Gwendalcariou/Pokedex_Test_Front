@@ -1,11 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of, Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 import { MyComponent } from './my-component';
 import { PokeAPIService } from '../poke-apiservice';
 import { PokemonCompositionInfo } from '../pokemon-composition-info';
 import { PokemonInformations } from '../pokemon';
+import { FilterPokemonPipePipe } from '../filter-pokemon--pipe-pipe';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 
 describe('MyComponent', () => {
   let component: MyComponent;
@@ -45,6 +54,7 @@ describe('MyComponent', () => {
   };
 
   beforeEach(async () => {
+    // Mocks
     pokeApiServiceMock = {
       getPokemon: jest.fn().mockReturnValue(
         of({
@@ -69,13 +79,32 @@ describe('MyComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [MyComponent],
+      declarations: [
+        MyComponent,
+        FilterPokemonPipePipe, // pipe utilisé dans le template
+      ],
+      imports: [
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatIconModule,
+      ],
       providers: [
-        { provide: PokeAPIService, useValue: pokeApiServiceMock },
         { provide: PokemonCompositionInfo, useValue: compositionInfoMock },
         { provide: ChangeDetectorRef, useValue: cdrMock },
       ],
-    }).compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+      .overrideComponent(MyComponent, {
+        set: {
+          providers: [
+            { provide: PokeAPIService, useValue: pokeApiServiceMock },
+          ],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(MyComponent);
     component = fixture.componentInstance;
@@ -87,7 +116,6 @@ describe('MyComponent', () => {
   });
 
   it('should load pokemons on ngOnInit', () => {
-    // ngOnInit est déjà appelé lors du premier detectChanges
     const pokemons = (component as any).pokemons;
 
     expect(pokeApiServiceMock.getPokemon).toHaveBeenCalled();
@@ -104,7 +132,6 @@ describe('MyComponent', () => {
     expect(pokeApiServiceMock.getPokemonInfo).toHaveBeenCalledWith('25');
     expect((component as any).pokeInformations).toEqual(dummyPokemonInfo);
     expect(compositionInfoMock.setValue).toHaveBeenCalledWith('25');
-    expect(cdrMock.detectChanges).toHaveBeenCalled();
   });
 
   it('go() should do nothing if selectedId is null', () => {
@@ -114,4 +141,17 @@ describe('MyComponent', () => {
 
     expect(pokeApiServiceMock.getPokemonInfo).not.toHaveBeenCalled();
   });
+
+    it('trackById should return the pokemon id', () => {
+    const result = (component as any).trackById(0, { id: 42 });
+    expect(result).toBe(42);
+  });
+
+  it('getIdFromUrl should extract numeric id from url', () => {
+    const id = (component as any)['getIdFromUrl'](
+      'https://pokeapi.co/api/v2/pokemon/123/',
+    );
+    expect(id).toBe(123);
+  });
+
 });

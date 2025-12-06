@@ -128,4 +128,29 @@ describe('PokeAPIService', () => {
 
     expect(received).toEqual({ chain: {} });
   });
+
+    it('should use default limit/offset when getPokemon is called without params', () => {
+    let received: PokemonServiceResult | undefined;
+
+    service.getPokemon().subscribe(res => {
+      received = res;
+    });
+
+    const req = httpMock.expectOne(
+      'https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0',
+    );
+    expect(req.request.method).toBe('GET');
+
+    const dummyResponse: PokemonServiceResult = {
+      count: 0,
+      next: '',
+      previous: '',
+      results: [],
+    };
+
+    req.flush(dummyResponse);
+
+    expect(received).toEqual(dummyResponse);
+  });
+
 });

@@ -2,13 +2,15 @@
     <!-- barre de recherche -->
     <mat-form-field appearance="outline">
         <mat-label>Search</mat-label>
-        <input matInput [(ngModel)]="searchName" placeholder="ex: pika..." />
+       <input matInput [(ngModel)]="searchName" name="searchName" placeholder="ex: pika..."/>
+
     </mat-form-field>
 
     <!-- select Material -->
     <mat-form-field appearance="outline">
         <mat-label>Pokémon</mat-label>
-        <mat-select [(ngModel)]="selectedId">
+        <mat-select [(ngModel)]="selectedId" name="selectedId">
+
             <mat-option *ngFor="let p of pokemons | filterPokemonPipe:'name':searchName; trackBy: trackById"
                 [value]="p.id">
                 {{ p.name | titlecase }}
