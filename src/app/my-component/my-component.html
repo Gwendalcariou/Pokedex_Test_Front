@@ -2,30 +2,44 @@
     <!-- barre de recherche -->
     <mat-form-field appearance="outline">
         <mat-label>Search</mat-label>
-       <input matInput [(ngModel)]="searchName" name="searchName" placeholder="ex: pika..."/>
-
+        <input
+            matInput
+            [(ngModel)]="searchName"
+            name="searchName"
+            placeholder="ex: pika..."
+            data-cy="search-input"
+        />
     </mat-form-field>
 
     <!-- select Material -->
     <mat-form-field appearance="outline">
         <mat-label>Pokémon</mat-label>
-        <mat-select [(ngModel)]="selectedId" name="selectedId">
-
-            <mat-option *ngFor="let p of pokemons | filterPokemonPipe:'name':searchName; trackBy: trackById"
-                [value]="p.id">
+        <mat-select
+            [(ngModel)]="selectedId"
+            name="selectedId"
+            data-cy="pokemon-select"
+        >
+            <mat-option
+                *ngFor="let p of pokemons | filterPokemonPipe:'name':searchName; trackBy: trackById" [value]="p.id">
                 {{ p.name | titlecase }}
             </mat-option>
         </mat-select>
     </mat-form-field>
 
-
-
-    <button mat-raised-button color="primary" [disabled]="!selectedId" (click)="go()">
+    <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!selectedId"
+        (click)="go()"
+        data-cy="go-button"
+    >
         <mat-icon>search</mat-icon>
     </button>
-
 </div>
 
 <div class="content" *ngIf="pokeInformations as info">
-    <app-pokeinformations [informations]="info"></app-pokeinformations>
+    <app-pokeinformations
+        [informations]="info"
+        data-cy="poke-card-wrapper"
+    ></app-pokeinformations>
 </div>

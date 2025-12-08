@@ -1,4 +1,4 @@
-<div class="poke-card" *ngIf="informations as info">
+<div class="poke-card" *ngIf="informations as info" data-cy="pokemon-card">
     <header class="poke-header">
         <img class="artwork"
             [src]="info.sprites.other?.['official-artwork']?.front_default || info.sprites.front_default"
